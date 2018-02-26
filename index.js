@@ -8,6 +8,8 @@ var handlebars = require('express-handlebars')
 app.engine('handlebars', handlebars.engine);
 app.set('view engine', 'handlebars');
 
+var randomError = require('./lib/randomError.js');
+
 app.set('port', process.env.PORT || 3000);
 
 app.use(express.static(__dirname + '/public'));
@@ -24,7 +26,7 @@ app.get('/about', function(req, res){
 // 404 error page
 app.use(function(req, res, next){
 	res.status(404);
-	res.render('404', { errorMessage: errorMessages[Math.floor(Math.random() * errorMessages.length)] });
+	res.render('404', { errorMessage: randomError.getRandomError() });
 });
 
 // 500 error page
@@ -39,10 +41,3 @@ app.listen(app.get('port'), function(){
 });
 
 
-
-var errorMessages = [
-	"Ooops!",
-	"Don't panic!",
-	"Miss me?",
-	"Are you sure?"
-];
